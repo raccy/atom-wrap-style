@@ -1,0 +1,18 @@
+{
+  "name": "wrap-style",
+  "main": "./lib/wrap-style",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [
+  ],
+  "activationCommands": {
+    "atom-workspace": "wrap-style:toggle"
+  },
+  "repository": "https://github.com/raccy/atom-wrap-style",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}
