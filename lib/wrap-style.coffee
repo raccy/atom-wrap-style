@@ -12,7 +12,7 @@ module.exports = WrapStyle =
       properties:
         whiteSpace:
           type: 'string'
-          default: 'normal'
+          default: 'pre-wrap'
           enum: ['normal', 'pre', 'nowrap', 'pre-wrap', 'pre-line']
         # lineBreak:
         #   type: 'string'
@@ -20,7 +20,7 @@ module.exports = WrapStyle =
         #   enum: ['auto', 'loose', 'normal', 'strict']
         wordBreak:
           type: 'string'
-          default: 'normal'
+          default: 'keep-all'
           enum: ['normal', 'keep-all', 'break-all']
         # hyphens:
         #   type: 'string'
@@ -28,7 +28,7 @@ module.exports = WrapStyle =
         #   enum: ['none', 'manual', 'auto']
         overflowWrap:
           type: 'string'
-          default: 'normal'
+          default: 'break-word'
           enum: ['normal', 'break-word']
     lang:
       type: 'string'
