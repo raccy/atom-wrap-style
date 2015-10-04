@@ -2,9 +2,8 @@
   "name": "wrap-style",
   "main": "./lib/wrap-style",
   "version": "0.0.0",
-  "description": "A short description of your package",
-  "keywords": [
-  ],
+  "description": "Select word warp style.",
+  "keywords": [],
   "activationCommands": {
     "atom-workspace": "wrap-style:toggle"
   },
@@ -14,5 +13,7 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
+    "ramda": "^0.17.1",
+    "react": "^0.13.3"
   }
 }

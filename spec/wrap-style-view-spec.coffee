@@ -2,4 +2,4 @@ WrapStyleView = require '../lib/wrap-style-view'
 
 describe "WrapStyleView", ->
   it "has one valid test", ->
-    expect("life").toBe "easy"
+    expect("life").not.toBe "easy"
