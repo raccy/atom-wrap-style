@@ -14,14 +14,16 @@ module.exports = WrapStyle =
           type: 'string'
           default: 'pre-wrap'
           enum: ['normal', 'pre', 'nowrap', 'pre-wrap', 'pre-line']
-        # lineBreak:
-        #   type: 'string'
-        #   default: 'auto'
-        #   enum: ['auto', 'loose', 'normal', 'strict']
+        lineBreak:
+          type: 'string'
+          default: 'strict'
+          enum: ['auto', 'loose', 'normal', 'strict']
         wordBreak:
           type: 'string'
-          default: 'keep-all'
-          enum: ['normal', 'keep-all', 'break-all']
+          default: 'normal'
+          # HACK: not support keep-all [WebKit bug 43917](https://bugs.webkit.org/show_bug.cgi?id=43917)
+          # enum: ['normal', 'keep-all', 'break-all']
+          enum: ['normal', 'break-all']
         # hyphens:
         #   type: 'string'
         #   default: 'none'

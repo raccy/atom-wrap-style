@@ -82,13 +82,13 @@ class WrapStyleManager
   # another findWrapColumn
   findWrapColumn: (text, column) ->
     width = @getWidth(column)
-    # console.log width
     wrapStyleSandboxElement = React.createElement WrapStyleSandbox,
       style:
         fontSize: "#{atom.config.get 'editor.fontSize'}px"
         fontFamily: atom.config.get 'editor.fontFamily'
         whiteSpace: atom.config.get 'wrap-style.style.whiteSpace'
         # lineBreak: atom.config.get 'wrap-style.style.lineBreak'
+        WebkitLineBreak: atom.config.get 'wrap-style.style.lineBreak'
         wordBreak: atom.config.get 'wrap-style.style.wordBreak'
         # hyphens: atom.config.get 'wrap-style.style.hyphens'
         overflowWrap: atom.config.get 'wrap-style.style.overflowWrap'
