@@ -48,10 +48,14 @@ class WrapStyleManager
     @defaultCharWidth ||= atom.workspace.getActiveTextEditor().displayBuffer.getDefaultCharWidth()
     column * @defaultCharWidth
 
+  clearMemory: ->
+    @memoryMap.clear()
+
   # another findWrapColumn
   findWrapColumn: (text, column) ->
     key = "#{column}:#{text}"
     if @memoryMap.has key
+      console.log 'use memoryMap'
       return @memoryMap.get key
 
     width = @getWidth(column)
