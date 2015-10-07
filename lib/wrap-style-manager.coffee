@@ -11,18 +11,6 @@ class WrapStyleManager
     @element.classList.add 'wrap-style'
     atom.views.getView atom.workspace
       .appendChild @element
-    # atom.views.getView(atom.workspace.getActivePane())
-    #   .querySelector('.item-views')
-    #   .appendChild(@element)
-
-    # Create message element
-    # message = document.createElement('div')
-    # message.textContent = "The WrapStyle package is Alive! It's ALIVE!"
-    # message.classList.add('message')
-    # @element.appendChild(message)
-
-  # Returns an object that can be retrieved when package is activated
-  serialize: ->
 
   # Tear down any state and detach
   destroy: ->
@@ -30,8 +18,6 @@ class WrapStyleManager
     if @overwrited
       @tokenizedLineClass.findWrapColumn = @originalFindWrapColumn
       @overwrited = false
-    # for editor in atom.workspace.getTextEditors()
-    #   @restoreFindWrapColumn(editor)
     @element.remove()
 
   getElement: ->
@@ -57,32 +43,14 @@ class WrapStyleManager
         return _wrapStyleManager.findWrapColumn(@text, maxColumn)
       @overwrited = true
 
-  # restore findWrapColumn()
-  # restoreFindWrapColumn: (editor) ->
-    # displayBuffer = editor.displayBuffer
-    # # displayBuffer has one line at least, so line:0 should exist.
-    # firstTokenizedLine = displayBuffer.tokenizedBuffer.tokenizedLineForRow(0)
-    # unless firstTokenizedLine?
-    #   console.log("displayBuffer has no line.")
-    #   return
-    #
-    # tokenizedLineClass = firstTokenizedLine.constructor::
-    # # tokenizedLineClass = firstTokenizedLine.__proto__
-    #
-    # if @overwrited
-    #   @tokenizedLineClass.findWrapColumn = @originalFindWrapColumn
-    #   @overwrited = false
-
   getWidth: (column) ->
-    # console.log column
-    # console.log @defaultCharWidth
     @defaultCharWidth ||= atom.workspace.getActiveTextEditor().displayBuffer.getDefaultCharWidth()
     column * @defaultCharWidth
 
   # another findWrapColumn
   findWrapColumn: (text, column) ->
     width = @getWidth(column)
-    # width is 0 not...
+    # width is 0 or null
     unless width
       console.warn 'not set width'
       return null

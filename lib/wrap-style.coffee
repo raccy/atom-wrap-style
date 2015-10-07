@@ -38,19 +38,12 @@ module.exports = WrapStyle =
 
   activate: (state) ->
     @wrapStyleManager = new WrapStyleManager
-    # @modalPanel = atom.workspace.addModalPanel(item: @wrapStyleView.getElement(), visible: false)
-    # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.workspace.observeTextEditors (editor) =>
       @wrapStyleManager.overwriteFindWrapColumn(editor)
 
   deactivate: ->
-    # @modalPanel.destroy()
     @subscriptions?.dispose()
     @subscriptions = null
-    # @wrapStyleView.destroy()
-    # for editor in atom.workspace.getTextEditors()
-    #   @wrapStyleManager?.restoreFindWrapColumn(editor)
-
     @wrapStyleManager?.destroy()
     @wrapStyleManager = null
