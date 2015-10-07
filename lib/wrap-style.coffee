@@ -44,10 +44,6 @@ module.exports = WrapStyle =
     @subscriptions.add atom.workspace.observeTextEditors (editor) =>
       @wrapStyleManager.overwriteFindWrapColumn(editor)
 
-
-    # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'wrap-style:toggle': => @toggle()
-
   deactivate: ->
     # @modalPanel.destroy()
     @subscriptions?.dispose()
@@ -58,14 +54,3 @@ module.exports = WrapStyle =
 
     @wrapStyleManager?.destroy()
     @wrapStyleManager = null
-
-  # serialize: ->
-    # wrapStyleViewState: @wrapStyleView.serialize()
-
-  toggle: ->
-    console.log 'WrapStyle was toggled!'
-    #
-    # if @modalPanel.isVisible()
-    #   @modalPanel.hide()
-    # else
-    #   @modalPanel.show()

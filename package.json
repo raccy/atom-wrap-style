@@ -4,9 +4,6 @@
   "version": "0.0.0",
   "description": "Select soft warp style.",
   "keywords": [],
-  "activationCommands": {
-    "atom-workspace": "wrap-style:toggle"
-  },
   "repository": "https://github.com/raccy/atom-wrap-style",
   "license": "MIT",
   "engines": {

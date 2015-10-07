@@ -40,15 +40,14 @@ class WrapStyleManager
   # overwrite findWrapColumn()
   overwriteFindWrapColumn: (editor) ->
     unless @overwrited
+      # get width of default char "x"
+      @defaultCharWidth ||= editor.displayBuffer.getDefaultCharWidth()
       # displayBuffer has one line at least, so line:0 should exist.
-      displayBuffer = editor.displayBuffer
       # get TokenizedLine Class
-      @tokenizedLineClass = displayBuffer.tokenizedBuffer.tokenizedLineForRow(0)?.constructor::
+      @tokenizedLineClass = editor.displayBuffer.tokenizedBuffer.tokenizedLineForRow(0)?.constructor::
       unless @tokenizedLineClass
         console.warn 'displayBuffer has no line.'
         return
-      # get width of default char "x"
-      @defaultCharWidth = displayBuffer.getDefaultCharWidth()
       # save original findeWrapColumn
       @originalFindWrapColumn = @tokenizedLineClass.findWrapColumn
       _wrapStyleManager = @
@@ -77,11 +76,16 @@ class WrapStyleManager
   getWidth: (column) ->
     # console.log column
     # console.log @defaultCharWidth
+    @defaultCharWidth ||= atom.workspace.getActiveTextEditor().displayBuffer.getDefaultCharWidth()
     column * @defaultCharWidth
 
   # another findWrapColumn
   findWrapColumn: (text, column) ->
     width = @getWidth(column)
+    # width is 0 not...
+    unless width
+      console.warn 'not set width'
+      return null
     wrapStyleSandboxElement = React.createElement WrapStyleSandbox,
       style:
         fontSize: "#{atom.config.get 'editor.fontSize'}px"
@@ -105,5 +109,5 @@ class WrapStyleManager
           break
       else
         memoryTop = child.offsetTop
-    # console.log "#{column}-#{width}/#{breakPoint}/#{text}"
+    console.log "#{column}-#{width}/#{breakPoint}/#{text}"
     breakPoint
