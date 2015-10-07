@@ -11,6 +11,7 @@ class WrapStyleManager
     @element.classList.add 'wrap-style'
     atom.views.getView atom.workspace
       .appendChild @element
+    @memoryMap = new Map
 
   # Tear down any state and detach
   destroy: ->
@@ -49,11 +50,16 @@ class WrapStyleManager
 
   # another findWrapColumn
   findWrapColumn: (text, column) ->
+    key = "#{column}:#{text}"
+    if @memoryMap.has key
+      return @memoryMap.get key
+
     width = @getWidth(column)
     # width is 0 or null
     unless width
       console.warn 'not set width'
       return null
+
     wrapStyleSandboxElement = React.createElement WrapStyleSandbox,
       style:
         fontSize: "#{atom.config.get 'editor.fontSize'}px"
@@ -78,4 +84,5 @@ class WrapStyleManager
       else
         memoryTop = child.offsetTop
     console.log "#{column}-#{width}/#{breakPoint}/#{text}"
+    @memoryMap.set key, breakPoint
     breakPoint
