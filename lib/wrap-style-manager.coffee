@@ -71,9 +71,10 @@ class WrapStyleManager
         WebkitLineBreak: atom.config.get 'wrap-style.style.lineBreak'
         wordBreak: atom.config.get 'wrap-style.style.wordBreak'
         # hyphens: atom.config.get 'wrap-style.style.hyphens'
+        # WebKitHyphens: atom.config.get 'wrap-style.style.hyphens'
         overflowWrap: atom.config.get 'wrap-style.style.overflowWrap'
       size: width
-      lang: atom.config.get 'wrap-style.lang'
+      # lang: atom.config.get 'wrap-style.lang'
       text: text
     React.render wrapStyleSandboxElement, @element
     memoryTop = null
