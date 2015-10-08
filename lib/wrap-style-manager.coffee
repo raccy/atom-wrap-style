@@ -53,7 +53,7 @@ class WrapStyleManager
   findWrapColumn: (text, column) ->
     key = "#{column}:#{text}"
     if @memoryMap.has key
-      console.log 'use memoryMap'
+      # console.log 'use memoryMap'
       return @memoryMap.get key
 
     width = @getWidth(column)
@@ -86,6 +86,6 @@ class WrapStyleManager
           break
       else
         memoryTop = child.offsetTop
-    console.log "#{column}-#{width}/#{breakPoint}/#{text}"
+    # console.log "#{column}-#{width}/#{breakPoint}/#{text}"
     @memoryMap.set key, breakPoint
     breakPoint
