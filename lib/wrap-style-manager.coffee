@@ -1,3 +1,4 @@
+TokenizedLine = require 'src/tokenized-line'
 React = require 'react'
 WrapStyleSandbox = require './wrap-style-sandbox'
 
@@ -5,44 +6,41 @@ module.exports =
 class WrapStyleManager
   constructor: ->
     @defaultCharWidth = null
-    @overwrited = false
+    @originalFindWrapColumn = null
+
     # Create root element
     @element = document.createElement 'div'
     @element.classList.add 'wrap-style'
     atom.views.getView atom.workspace
       .appendChild @element
+
     @memoryMap = new Map
+    @overwriteFindWrapColumn()
 
   # Tear down any state and detach
   destroy: ->
-    # restore findeWrapColumn
-    if @overwrited
-      @tokenizedLineClass.findWrapColumn = @originalFindWrapColumn
-      @overwrited = false
+    # restore TokenizedLine#findWrapColumn()
+    if @originalFindWrapColumn
+      TokenizedLine::.findWrapColumn = @originalFindWrapColumn
+      @originalFindWrapColumn = null
+
     @element.remove()
 
   getElement: ->
     @element
 
-  # overwrite findWrapColumn()
-  overwriteFindWrapColumn: (editor) ->
-    unless @overwrited
-      # get width of default char "x"
-      @defaultCharWidth ||= editor.displayBuffer.getDefaultCharWidth()
-      # displayBuffer has one line at least, so line:0 should exist.
-      # get TokenizedLine Class
-      @tokenizedLineClass = editor.displayBuffer.tokenizedBuffer.tokenizedLineForRow(0)?.constructor::
-      unless @tokenizedLineClass
-        console.warn 'displayBuffer has no line.'
-        return
-      # save original findeWrapColumn
-      @originalFindWrapColumn = @tokenizedLineClass.findWrapColumn
-      _wrapStyleManager = @
-      @tokenizedLineClass.findWrapColumn = (maxColumn) ->
-        # If all characters are full width, the width is twice the length.
-        return unless (@text.length * 2) > maxColumn
-        return _wrapStyleManager.findWrapColumn(@text, maxColumn)
-      @overwrited = true
+  # overwrite TokenizedLine#findWrapColumn()
+  overwriteFindWrapColumn: ->
+    if @originalFindWrapColumn
+      console.warn 'overwrited TokenizedLine#findWrapColumn'
+      return
+
+    @originalFindWrapColumn = TokenizedLine::.findWrapColumn
+    _wrapStyleManager = @
+    TokenizedLine::.findWrapColumn = (maxColumn) ->
+      # If all characters are full width, the width is twice the length.
+      return unless (@text.length * 2) > maxColumn
+      return _wrapStyleManager.findWrapColumn(@text, maxColumn)
 
   getWidth: (column) ->
     @defaultCharWidth ||= atom.workspace.getActiveTextEditor().displayBuffer.getDefaultCharWidth()

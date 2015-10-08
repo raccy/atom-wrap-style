@@ -39,8 +39,6 @@ module.exports = WrapStyle =
   activate: (state) ->
     @wrapStyleManager = new WrapStyleManager
     @subscriptions = new CompositeDisposable
-    @subscriptions.add atom.workspace.observeTextEditors (editor) =>
-      @wrapStyleManager.overwriteFindWrapColumn(editor)
     @subscriptions.add atom.workspace.observeActivePaneItem (item) =>
       @wrapStyleManager.clearMemory()
 
