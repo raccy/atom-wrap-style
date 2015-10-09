@@ -9,6 +9,8 @@ This package conflicts [atomicchar](https://atom.io/packages/atomicchar),
 
 ### TODO
 * [ ] More fast (-д-;
-* [ ] To refer to atomicchar
+* [x] To refer to atomicchar
 * [ ] No React? Uuumm...
-* [ ] Use shadow DOM
+* [ ] Use shadow DOM?
+* [ ] Consider Combining Characters
+* [ ] Consider broken Surrogate
