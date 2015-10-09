@@ -1,4 +1,3 @@
-{CompositeDisposable} = require 'atom'
 WrapStyleManager = require './wrap-style-manager'
 
 module.exports = WrapStyle =
@@ -43,12 +42,7 @@ module.exports = WrapStyle =
 
   activate: (state) ->
     @wrapStyleManager = new WrapStyleManager
-    @subscriptions = new CompositeDisposable
-    @subscriptions.add atom.workspace.observeActivePaneItem (item) =>
-      @wrapStyleManager.clearMemory()
 
   deactivate: ->
-    @subscriptions?.dispose()
-    @subscriptions = null
     @wrapStyleManager?.destroy()
     @wrapStyleManager = null

@@ -1,3 +1,4 @@
+{CompositeDisposable} = require 'atom'
 TokenizedLine = require 'src/tokenized-line'
 React = require 'react'
 WrapStyleSandbox = require './wrap-style-sandbox'
@@ -7,6 +8,8 @@ class WrapStyleManager
   constructor: ->
     @defaultCharWidth = null
     @originalFindWrapColumn = null
+    @subscriptions = new CompositeDisposable
+    @memoryMap = new Map
 
     # Create root element
     @element = document.createElement 'div'
@@ -14,11 +17,16 @@ class WrapStyleManager
     atom.views.getView atom.workspace
       .appendChild @element
 
-    @memoryMap = new Map
+    @subscriptions.add atom.workspace.observeActivePaneItem (item) =>
+      @clearMemory()
+
     @overwriteFindWrapColumn()
 
   # Tear down any state and detach
   destroy: ->
+    @subscriptions?.dispose()
+    @clearMemory()
+
     # restore TokenizedLine#findWrapColumn()
     if @originalFindWrapColumn
       TokenizedLine::.findWrapColumn = @originalFindWrapColumn
