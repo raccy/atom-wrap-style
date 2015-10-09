@@ -8,7 +8,7 @@ class WrapStyleManager
   constructor: ->
     @defaultCharWidth = null
     @originalFindWrapColumn = null
-    @subscriptions = new CompositeDisposable
+    @calculate = null
     @memoryMap = new Map
 
     # Create root element
@@ -17,9 +17,29 @@ class WrapStyleManager
     atom.views.getView atom.workspace
       .appendChild @element
 
+    # add ovserver
+    @subscriptions = new CompositeDisposable
+    [
+      'editor.fontSize'
+      'editor.fontFamily'
+    ].forEach (name) =>
+      @subscriptions.add atom.config.onDidChange name, (value) =>
+        @defaultCharWidth = null
+        @renderSandbox()
+    [
+      'wrap-style.style.whiteSpace'
+      'wrap-style.style.lineBreak'
+      'wrap-style.style.wordBreak'
+      'wrap-style.style.hyphens'
+      'wrap-style.style.overflowWrap'
+      'wrap-style.lang'
+    ].forEach (name) =>
+      @subscriptions.add atom.config.observe name, (value) =>
+        @renderSandbox()
     @subscriptions.add atom.workspace.observeActivePaneItem (item) =>
       @clearMemory()
 
+    @renderSandbox()
     @overwriteFindWrapColumn()
 
   # Tear down any state and detach
@@ -34,8 +54,24 @@ class WrapStyleManager
 
     @element.remove()
 
-  getElement: ->
-    @element
+  setCalculate: (func) ->
+    @calculate = func
+
+  renderSandbox: ->
+    wrapStyleSandboxElement = React.createElement WrapStyleSandbox,
+      style:
+        fontSize: "#{atom.config.get 'editor.fontSize'}px"
+        fontFamily: atom.config.get 'editor.fontFamily'
+        whiteSpace: atom.config.get 'wrap-style.style.whiteSpace'
+        # lineBreak: atom.config.get 'wrap-style.style.lineBreak'
+        WebkitLineBreak: atom.config.get 'wrap-style.style.lineBreak'
+        wordBreak: atom.config.get 'wrap-style.style.wordBreak'
+        # hyphens: atom.config.get 'wrap-style.style.hyphens'
+        # WebKitHyphens: atom.config.get 'wrap-style.style.hyphens'
+        overflowWrap: atom.config.get 'wrap-style.style.overflowWrap'
+      # lang: atom.config.get 'wrap-style.lang'
+      manager: @
+    React.render wrapStyleSandboxElement, @element
 
   # overwrite TokenizedLine#findWrapColumn()
   overwriteFindWrapColumn: ->
@@ -64,36 +100,13 @@ class WrapStyleManager
       # console.log 'use memoryMap'
       return @memoryMap.get key
 
-    width = @getWidth(column)
+    width = @getWidth column
     # width is 0 or null
     unless width
       console.warn 'not set width'
       return null
 
-    wrapStyleSandboxElement = React.createElement WrapStyleSandbox,
-      style:
-        fontSize: "#{atom.config.get 'editor.fontSize'}px"
-        fontFamily: atom.config.get 'editor.fontFamily'
-        whiteSpace: atom.config.get 'wrap-style.style.whiteSpace'
-        # lineBreak: atom.config.get 'wrap-style.style.lineBreak'
-        WebkitLineBreak: atom.config.get 'wrap-style.style.lineBreak'
-        wordBreak: atom.config.get 'wrap-style.style.wordBreak'
-        # hyphens: atom.config.get 'wrap-style.style.hyphens'
-        # WebKitHyphens: atom.config.get 'wrap-style.style.hyphens'
-        overflowWrap: atom.config.get 'wrap-style.style.overflowWrap'
-      size: width
-      # lang: atom.config.get 'wrap-style.lang'
-      text: text
-    React.render wrapStyleSandboxElement, @element
-    memoryTop = null
-    breakPoint = null
-    for child in @element.querySelector('.wrap-style-sandbox').children
-      if memoryTop?
-        if memoryTop != child.offsetTop
-          breakPoint = Number(child.getAttribute('data-index'))
-          break
-      else
-        memoryTop = child.offsetTop
+    breakPoint = @calculate width, text
     # console.log "#{column}-#{width}/#{breakPoint}/#{text}"
     @memoryMap.set key, breakPoint
     breakPoint
