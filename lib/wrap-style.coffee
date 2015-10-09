@@ -1,9 +1,7 @@
 WrapStyleManager = require './wrap-style-manager'
 
 module.exports = WrapStyle =
-  wrapStyleView: null
-  modalPanel: null
-  subscriptions: null
+  wrapStyleManager: null
 
   config:
     style:
