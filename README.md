@@ -6,11 +6,3 @@ This package breaks lines in accordance with the styles of [CSS Text Module Leve
 
 This package conflicts [atomicchar](https://atom.io/packages/atomicchar),
 [japanese-wrap](https://atom.io/packages/japanese-wrap), and so on. Please use only one of them, and disable or uninstall others.
-
-### TODO
-* [x] More fast (-д-;
-* [x] To refer to atomicchar
-* [ ] No React? Uuumm...
-* [ ] Use shadow DOM?
-* [x] Consider Combining Characters
-* [x] Consider broken Surrogate
