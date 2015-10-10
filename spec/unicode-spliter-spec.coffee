@@ -28,3 +28,10 @@ describe 'UnicodeSpliter', ->
         {index: 1, value: '🐱'},
         {index: 3, value: 'b'},
       ]
+    it 'aか\u3099b Surrogate', ->
+      text = 'aか\u3099b' # 'が'
+      expect(UnicodeSpliter.splitChar(text)).toEqual [
+        {index: 0, value: 'a'},
+        {index: 1, value: 'か\u3099'},
+        {index: 3, value: 'b'},
+      ]

@@ -12,5 +12,5 @@ This package conflicts [atomicchar](https://atom.io/packages/atomicchar),
 * [x] To refer to atomicchar
 * [ ] No React? Uuumm...
 * [ ] Use shadow DOM?
-* [ ] Consider Combining Characters
-* [ ] Consider broken Surrogate
+* [x] Consider Combining Characters
+* [x] Consider broken Surrogate

@@ -7,24 +7,15 @@ class UnicoderSpliter
     require('unicode-8.0.0/blocks/Low Surrogates/code-points'),
     require('unicode-8.0.0/blocks/Private Use Area/code-points'))
   @nsm = require('unicode-8.0.0/bidi/NSM/code-points')
+  @unbreakableChars = [].concat(@lowSurrogate, @nsm)
 
-  # TODO: consider Combining Characters
-  # FIXME: If the last is only a High Surrogate, broken and no warning message.
   @splitChar = (text) ->
-    inSurrogate = false
+    return [] unless text
     list = []
-    for i in [0...text.length]
-      if inSurrogate
-        inSurrogate = false
-        if text.charCodeAt(i) in @lowSurrogate
-          list.push index: i - 1, value: text[(i - 1)..i]
-        else
-          console.warn "broken surrogate: #{i}, #{text.charCodeAt(i - 1)}, #{text.charCodeAt(i)}"
-          list.push index: i - 1, value: text[i - 1]
-          list.push index: i, value: text[i]
-      else if text.charCodeAt(i) in @highSurrogate
-        inSurrogate = true
-        # not add list
-      else
-        list.push index: i, value: text[i]
+    pre = 0
+    for i in [1...text.length]
+      unless text.charCodeAt(i) in @unbreakableChars
+        list.push index: pre, value: text.substring(pre, i)
+        pre = i
+    list.push index: pre, value: text.substring(pre)
     return list
