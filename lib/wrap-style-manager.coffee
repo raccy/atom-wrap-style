@@ -30,9 +30,10 @@ class WrapStyleManager
       'wrap-style.style.whiteSpace'
       'wrap-style.style.lineBreak'
       'wrap-style.style.wordBreak'
-      'wrap-style.style.hyphens'
+      # 'wrap-style.style.hyphens'
       'wrap-style.style.overflowWrap'
-      'wrap-style.lang'
+      # 'wrap-style.lang'
+      'wrap-style.strictMode'
     ].forEach (name) =>
       @subscriptions.add atom.config.observe name, (value) =>
         @renderSandbox()
@@ -70,6 +71,7 @@ class WrapStyleManager
         # WebKitHyphens: atom.config.get 'wrap-style.style.hyphens'
         overflowWrap: atom.config.get 'wrap-style.style.overflowWrap'
       # lang: atom.config.get 'wrap-style.lang'
+      strict: atom.config.get 'wrap-style.strictMode'
       manager: @
     React.render wrapStyleSandboxElement, @element
 

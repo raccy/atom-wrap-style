@@ -9,7 +9,7 @@ class UnicoderSpliter
   @nsm = require('unicode-8.0.0/bidi/NSM/code-points')
   @unbreakableChars = [].concat(@lowSurrogate, @nsm)
 
-  @splitChar = (text) ->
+  @splitCharStrict = (text) ->
     return [] unless text
     list = []
     pre = 0
@@ -19,3 +19,6 @@ class UnicoderSpliter
         pre = i
     list.push index: pre, value: text.substring(pre)
     return list
+
+  @splitChar = (text) ->
+    return (index: i, value: text.charAt(i) for i in [0...text.length])

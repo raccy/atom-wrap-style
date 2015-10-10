@@ -37,7 +37,10 @@ module.exports = WrapStyle =
     #   type: 'string'
     #   default: 'en'
     #   description: 'Effect hyphenation. But not support hyphenation, so ignore this paramator.'
-
+    strictMode:
+      type: 'boolean'
+      default: false
+      description: 'Slow, but consider NFD characters and Surrogate pairs.'
   activate: (state) ->
     @wrapStyleManager = new WrapStyleManager
 

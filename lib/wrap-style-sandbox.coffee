@@ -26,6 +26,11 @@ class WrapStyleSandbox extends React.Component
     breakPoint
 
   render: ->
+    textList = if @props.strict
+      UnicodeSpliter.splitCharStrict(@state.text)
+    else
+      UnicodeSpliter.splitChar(@state.text)
+
     React.DOM.div
       className: 'wrap-style-sandbox'
       lang: @props.lang
@@ -35,5 +40,5 @@ class WrapStyleSandbox extends React.Component
         className: 'wrap-style-area'
         style:
           width: "#{@state.width}px"
-        for {index, value} in UnicodeSpliter.splitChar(@state.text)
+        for {index, value} in textList
           React.DOM.span key: index, 'data-index': index, value
