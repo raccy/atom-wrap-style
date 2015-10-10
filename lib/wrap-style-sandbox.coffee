@@ -14,22 +14,40 @@ class WrapStyleSandbox extends React.Component
       @findFirstBreak()
 
   findFirstBreak: ->
-    memoryTop = null
+    areaElement = React.findDOMNode @refs.wrapStyleArea
+    # if no child, no break
+    return null unless areaElement.children.length
+
+    firstTop = areaElement.children[0].offsetTop
     breakPoint = null
-    for child in React.findDOMNode(@refs.wrapStyleArea).children
-      if memoryTop?
-        if memoryTop != child.offsetTop
-          breakPoint = Number(child.getAttribute('data-index'))
-          break
+
+    top = 0
+    bottom = areaElement.children.length - 1
+    # if one line, no break
+    return null if areaElement.children[bottom].offsetTop == firstTop
+
+    # OPTIMIZE: More fast!
+    while bottom - top > 1
+      check = (bottom + top) // 2
+      if areaElement.children[check].offsetTop == firstTop
+        top = check
       else
-        memoryTop = child.offsetTop
-    breakPoint
+        bottom = check
+    Number areaElement.children[bottom].getAttribute 'data-index'
+
+    # OPTIMIZE: some case, fast?
+    # breakPoint = null
+    # for child in areaElement.children
+    #   if firstTop != child.offsetTop
+    #     breakPoint = Number(child.getAttribute('data-index'))
+    #     break
+    # breakPoint
 
   render: ->
     textList = if @props.strict
-      UnicodeSpliter.splitCharStrict(@state.text)
+      UnicodeSpliter.splitCharStrict @state.text
     else
-      UnicodeSpliter.splitChar(@state.text)
+      UnicodeSpliter.splitChar @state.text
 
     React.DOM.div
       className: 'wrap-style-sandbox'

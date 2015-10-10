@@ -8,7 +8,7 @@ This package conflicts [atomicchar](https://atom.io/packages/atomicchar),
 [japanese-wrap](https://atom.io/packages/japanese-wrap), and so on. Please use only one of them, and disable or uninstall others.
 
 ### TODO
-* [ ] More fast (-д-;
+* [x] More fast (-д-;
 * [x] To refer to atomicchar
 * [ ] No React? Uuumm...
 * [ ] Use shadow DOM?
