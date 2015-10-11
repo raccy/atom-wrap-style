@@ -43,6 +43,23 @@ class WrapStyleSandbox extends React.Component
     #     break
     # breakPoint
 
+  # TODO: all braek points ... use?
+  findAllBreak: ->
+    areaElement = React.findDOMNode @refs.wrapStyleArea
+    berakList = []
+    # if no child, no break
+    return berakList unless areaElement.children.length
+
+    currentTop = null
+    for child in areaElement.children
+      if currentTop != child.offsetTop
+        berakList.push(Number(child.getAttribute('data-index'))) if currentTop?
+        currentTop = child.offsetTop
+    return breakList
+
+  getFirstCharacterWidth: ->
+    React.findDOMNode(@refs.wrapStyleArea).firstChild?.offsetWidth
+
   render: ->
     textList = if @props.strict
       UnicodeSpliter.splitCharStrict @state.text
