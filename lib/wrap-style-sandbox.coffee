@@ -43,7 +43,6 @@ class WrapStyleSandbox extends React.Component
     #     break
     # breakPoint
 
-  # TODO: all braek points ... use?
   findAllBreak: ->
     areaElement = React.findDOMNode @refs.wrapStyleArea
     breakList = []
