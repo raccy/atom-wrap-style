@@ -14,6 +14,9 @@ class WrapStyleManager
     # Create root element
     @element = document.createElement 'div'
     @element.classList.add 'wrap-style'
+    @element.style.position = 'absolute'
+    @element.style.visibility = 'hidden'
+    @element.style.fontFamily = "Menlo, Consolas, 'DejaVu Sans Mono', monospace"
     atom.views.getView atom.workspace
       .appendChild @element
 
