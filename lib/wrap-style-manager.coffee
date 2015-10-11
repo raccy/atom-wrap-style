@@ -111,7 +111,10 @@ class WrapStyleManager
       console.warn 'not set width'
       return null
 
-    breakPoint = @calculate width, text
-    # console.log "#{column}-#{width}/#{breakPoint}/#{text}"
-    @memoryMap.set key, breakPoint
-    breakPoint
+    breakPointList = @calculate(width, text)
+    pre = 0
+    for i in breakPointList
+      @memoryMap.set "#{column}:#{text.substr(pre)}", i - pre
+      pre = i
+    @memoryMap.set "#{column}:#{text.substr(pre)}", null
+    breakPointList[0]
