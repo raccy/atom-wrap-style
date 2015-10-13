@@ -1,5 +1,6 @@
-## 0.1.2 - Update
+## 0.1.2 - Various Update
 * Migrate React 0.14
+* Performance improved a little
 
 ## 0.1.1 - Performance Update
 * Performance improved
