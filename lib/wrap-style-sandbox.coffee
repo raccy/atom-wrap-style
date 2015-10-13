@@ -41,13 +41,13 @@ class WrapStyleSandbox extends React.Component
         top = check
       else
         bottom = check
-    Number areaElement.children[bottom].getAttribute 'data-index'
+    +(areaElement.children[bottom].getAttribute 'data-index')
 
     # OPTIMIZE: some case, fast?
     # breakPoint = null
     # for child in areaElement.children
     #   if firstTop != child.offsetTop
-    #     breakPoint = Number(child.getAttribute('data-index'))
+    #     breakPoint = +(child.getAttribute 'data-index')
     #     break
     # breakPoint
 
@@ -58,7 +58,7 @@ class WrapStyleSandbox extends React.Component
     currentTop = null
     for child in @refs.wrapStyleArea.children
       if currentTop != child.offsetTop
-        breakList.push(Number(child.getAttribute('data-index'))) if currentTop?
+        breakList.push +(child.getAttribute 'data-index') if currentTop?
         currentTop = child.offsetTop
     breakList
 
