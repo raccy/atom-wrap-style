@@ -1,6 +1,7 @@
 {CompositeDisposable} = require 'atom'
 TokenizedLine = require 'src/tokenized-line'
 React = require 'react'
+ReactDom = require 'react-dom'
 WrapStyleSandbox = require './wrap-style-sandbox'
 
 module.exports =
@@ -56,6 +57,7 @@ class WrapStyleManager
       TokenizedLine::.findWrapColumn = @originalFindWrapColumn
       @originalFindWrapColumn = null
 
+    ReactDom.unmountComponentAtNode @element
     @element.remove()
 
   setCalculate: (func) ->
@@ -76,7 +78,7 @@ class WrapStyleManager
       # lang: atom.config.get 'wrap-style.lang'
       strict: atom.config.get 'wrap-style.strictMode'
       manager: @
-    React.render wrapStyleSandboxElement, @element
+    ReactDom.render wrapStyleSandboxElement, @element
 
   # overwrite TokenizedLine#findWrapColumn()
   overwriteFindWrapColumn: ->

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "react": "^0.14.0",
+    "react-dom": "^0.14.0",
     "unicode-8.0.0": "^0.1.5"
   }
 }
