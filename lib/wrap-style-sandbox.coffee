@@ -14,6 +14,7 @@ class WrapStyleSandbox extends React.Component
       text: text
     @findAllBreak()
 
+  # OPTIMIZE: More fast!
   findFirstBreak: ->
     areaElement = @refs.wrapStyleArea
     # if no child, no break
@@ -27,7 +28,6 @@ class WrapStyleSandbox extends React.Component
     # if one line, no break
     return null if areaElement.children[bottom].offsetTop == firstTop
 
-    # OPTIMIZE: More fast!
     while bottom - top > 1
       check = (bottom + top) // 2
       if areaElement.children[check].offsetTop == firstTop
@@ -36,7 +36,7 @@ class WrapStyleSandbox extends React.Component
         bottom = check
     +(areaElement.children[bottom].getAttribute 'data-index')
 
-    # OPTIMIZE: some case, fast?
+    # OPTIMIZE: another
     # breakPoint = null
     # for child in areaElement.children
     #   if firstTop != child.offsetTop
@@ -44,10 +44,9 @@ class WrapStyleSandbox extends React.Component
     #     break
     # breakPoint
 
+  # OPTIMIZE: More fast!
   findAllBreak: ->
     breakList = []
-
-    # OPTIMIZE: More fast!
     currentTop = null
     for child in @refs.wrapStyleArea.children
       if currentTop != child.offsetTop
@@ -61,7 +60,7 @@ class WrapStyleSandbox extends React.Component
   render: ->
     React.DOM.div
       className: 'wrap-style-sandbox'
-      lang: @props.lang
+      # lang: @props.lang
       style: @props.style
       React.DOM.div
         ref: 'wrapStyleArea'

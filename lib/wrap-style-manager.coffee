@@ -74,7 +74,6 @@ class WrapStyleManager
         overflowWrap: atom.config.get 'wrap-style.style.overflowWrap'
       # lang: atom.config.get 'wrap-style.lang'
       strict: atom.config.get 'wrap-style.strictMode'
-      # manager: @
     @sandbox = ReactDom.render wrapStyleSandboxElement, @element
 
   # overwrite TokenizedLine#findWrapColumn()
