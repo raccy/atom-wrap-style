@@ -22,3 +22,9 @@ class UnicoderSpliter
 
   @splitChar = (text) ->
     return (index: i, value: text.charAt(i) for i in [0...text.length])
+
+  @mapChar = (text, callback, strict = false) ->
+    if strict
+      return (callback obj for obj in @splitCharStrict text)
+    else
+      return (callback index: i, value: text.charAt(i) for i in [0...text.length])

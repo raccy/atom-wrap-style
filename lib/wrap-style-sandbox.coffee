@@ -59,11 +59,6 @@ class WrapStyleSandbox extends React.Component
     @refs.wrapStyleArea.firstChild?.offsetWidth
 
   render: ->
-    textList = if @props.strict
-      UnicodeSpliter.splitCharStrict @state.text
-    else
-      UnicodeSpliter.splitChar @state.text
-
     React.DOM.div
       className: 'wrap-style-sandbox'
       lang: @props.lang
@@ -73,5 +68,6 @@ class WrapStyleSandbox extends React.Component
         className: 'wrap-style-area'
         style:
           width: "#{@state.width}px"
-        for {index, value} in textList
+        UnicodeSpliter.mapChar @state.text, ({index, value}) ->
           React.DOM.span key: index, 'data-index': index, value
+        , @props.strict
