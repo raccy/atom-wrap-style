@@ -2,16 +2,24 @@ React = require 'react'
 UnicodeSpliter = require './unicode-spliter'
 module.exports =
 class WrapStyleSandbox extends React.Component
+  @defaultPros =
+    style: {}
+    lang: null
+    strict: false
+    manager:
+      setCalculate: -> null
+
   constructor: (props) ->
     super
     @state =
       width: 0
       text: ''
-    @props.manager.setCalculate (width, text) =>
-      @setState
-        width: width
-        text: text
-      @findAllBreak()
+
+  calculate: (width, text) ->
+    @setState
+      width: width
+      text: text
+    @findAllBreak()
 
   findFirstBreak: ->
     areaElement = @refs.wrapStyleArea

@@ -9,7 +9,7 @@ class WrapStyleManager
   constructor: ->
     @defaultCharWidth = null
     @originalFindWrapColumn = null
-    @calculate = null
+    @sandbox = null
     @memoryMap = new Map
 
     # Create root element
@@ -60,9 +60,6 @@ class WrapStyleManager
     ReactDom.unmountComponentAtNode @element
     @element.remove()
 
-  setCalculate: (func) ->
-    @calculate = func
-
   renderSandbox: ->
     wrapStyleSandboxElement = React.createElement WrapStyleSandbox,
       style:
@@ -77,8 +74,8 @@ class WrapStyleManager
         overflowWrap: atom.config.get 'wrap-style.style.overflowWrap'
       # lang: atom.config.get 'wrap-style.lang'
       strict: atom.config.get 'wrap-style.strictMode'
-      manager: @
-    ReactDom.render wrapStyleSandboxElement, @element
+      # manager: @
+    @sandbox = ReactDom.render wrapStyleSandboxElement, @element
 
   # overwrite TokenizedLine#findWrapColumn()
   overwriteFindWrapColumn: ->
@@ -112,7 +109,7 @@ class WrapStyleManager
       console.warn 'not set width'
       return null
 
-    breakPointList = @calculate(width, text)
+    breakPointList = @sandbox.calculate width, text
     pre = 0
     for i in breakPointList
       @memoryMap.set "#{column}:#{text.substr(pre)}", i - pre
