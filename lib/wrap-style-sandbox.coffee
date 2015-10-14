@@ -1,16 +1,35 @@
 React = require 'react'
 UnicodeSpliter = require './unicode-spliter'
+
 module.exports =
 class WrapStyleSandbox extends React.Component
+  @propTypes =
+    style: React.PropTypes.object.isRequired
+    strict: React.PropTypes.bool
+    lang: React.PropTypes.string
+    defaultChar: React.PropTypes.string
+
+  @defaultProps =
+    strict: false
+    defaultChar: 'x'
+    lang: null
+
   constructor: (props) ->
     super
     @state =
-      width: 0
+      column: 0
       text: ''
+      defaultCharWidth: 0
 
-  calculate: (width, text) ->
+  initializeDefaultCharWidth: ->
     @setState
-      width: width
+      column: 0
+      text: @props.defaultChar
+    @setState defaultCharWidth: @getFirstCharacterWidth()
+
+  calculate: (column, text) ->
+    @setState
+      column: column
       text: text
     @findAllBreak()
 
@@ -66,7 +85,7 @@ class WrapStyleSandbox extends React.Component
         ref: 'wrapStyleArea'
         className: 'wrap-style-area'
         style:
-          width: "#{@state.width}px"
+          width: "#{@state.defaultCharWidth * @state.column}px"
         UnicodeSpliter.mapChar @state.text, ({index, value}) ->
           React.DOM.span key: index, 'data-index': index, value
         , @props.strict

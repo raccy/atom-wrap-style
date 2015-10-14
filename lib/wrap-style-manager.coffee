@@ -7,7 +7,6 @@ WrapStyleSandbox = require './wrap-style-sandbox'
 module.exports =
 class WrapStyleManager
   constructor: ->
-    @defaultCharWidth = null
     @originalFindWrapColumn = null
     @sandbox = null
     @memoryMap = new Map
@@ -26,11 +25,6 @@ class WrapStyleManager
     [
       'editor.fontSize'
       'editor.fontFamily'
-    ].forEach (name) =>
-      @subscriptions.add atom.config.onDidChange name, (value) =>
-        @defaultCharWidth = null
-        @renderSandbox()
-    [
       'wrap-style.style.whiteSpace'
       'wrap-style.style.lineBreak'
       'wrap-style.style.wordBreak'
@@ -75,6 +69,7 @@ class WrapStyleManager
       # lang: atom.config.get 'wrap-style.lang'
       strict: atom.config.get 'wrap-style.strictMode'
     @sandbox = ReactDom.render wrapStyleSandboxElement, @element
+    @sandbox.initializeDefaultCharWidth()
 
   # overwrite TokenizedLine#findWrapColumn()
   overwriteFindWrapColumn: ->
@@ -89,10 +84,6 @@ class WrapStyleManager
       return unless (@text.length * 2) > maxColumn
       return _wrapStyleManager.findWrapColumn(@text, maxColumn)
 
-  getWidth: (column) ->
-    @defaultCharWidth ||= atom.workspace.getActiveTextEditor().displayBuffer.getDefaultCharWidth()
-    column * @defaultCharWidth
-
   clearMemory: ->
     @memoryMap.clear()
 
@@ -102,13 +93,7 @@ class WrapStyleManager
     if @memoryMap.has key
       return @memoryMap.get key
 
-    width = @getWidth column
-    # width is 0 or null
-    unless width
-      console.warn 'not set width'
-      return null
-
-    breakPointList = @sandbox.calculate width, text
+    breakPointList = @sandbox.calculate column, text
     pre = 0
     for i in breakPointList
       @memoryMap.set "#{column}:#{text.substr(pre)}", i - pre
