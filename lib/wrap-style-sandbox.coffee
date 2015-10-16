@@ -88,4 +88,4 @@ class WrapStyleSandbox extends React.Component
           width: "#{@state.defaultCharWidth * @state.column}px"
         UnicodeSpliter.mapChar @state.text, ({index, value}) ->
           React.DOM.span key: index, 'data-index': index, value
-        , @props.strict
+        , @props.strict, @state.column // 2
