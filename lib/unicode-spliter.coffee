@@ -3,13 +3,11 @@ class UnicoderSpliter
   @highSurrogate = [].concat(
     require('unicode-8.0.0/blocks/High Surrogates/code-points'),
     require('unicode-8.0.0/blocks/High Private Use Surrogates/code-points'))
-  @lowSurrogate = [].concat(
-    require('unicode-8.0.0/blocks/Low Surrogates/code-points'),
-    require('unicode-8.0.0/blocks/Private Use Area/code-points'))
+  @lowSurrogate = require('unicode-8.0.0/blocks/Low Surrogates/code-points')
   @nsm = require('unicode-8.0.0/bidi/NSM/code-points')
   @unbreakableChars = [].concat(@lowSurrogate, @nsm)
 
-  @splitCharStrict = (text) ->
+  @splitCharStrict = (text, skip = 0) ->
     return [] unless text
     list = []
     pre = 0
@@ -25,7 +23,7 @@ class UnicoderSpliter
 
   @mapChar = (text, callback, strict = false, skip = 0) ->
     if strict
-      return (callback obj for obj in @splitCharStrict text)
+      return (callback obj for obj in @splitCharStrict text, skip)
     else if skip
       return [callback index: 0, value: text[0...skip]]
         .concat(callback index: i, value: text[i] for i in [skip...text.length])
