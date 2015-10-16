@@ -1,5 +1,5 @@
-## 0.1.2 - Various Update
-* Calculate defaultCharWidth in Sandbox
+## 0.1.3 - Various Update
+* Calculate and use defaultCharWidth in Sandbox
 * Performance improved a little
 
 ## 0.1.2 - Various Update
