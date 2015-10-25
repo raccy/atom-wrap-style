@@ -4,15 +4,12 @@ UnicodeSpliter = require './unicode-spliter'
 module.exports =
 class WrapStyleSandbox extends React.Component
   @propTypes =
-    style: React.PropTypes.object.isRequired
     strict: React.PropTypes.bool
-    lang: React.PropTypes.string
     defaultChar: React.PropTypes.string
 
   @defaultProps =
     strict: false
     defaultChar: 'x'
-    lang: null
 
   constructor: (props) ->
     super
@@ -35,7 +32,7 @@ class WrapStyleSandbox extends React.Component
 
   # OPTIMIZE: More fast!
   findFirstBreak: ->
-    areaElement = @refs.wrapStyleArea
+    areaElement = @refs.sandbox
     # if no child, no break
     return null unless areaElement.children.length
 
@@ -67,25 +64,21 @@ class WrapStyleSandbox extends React.Component
   findAllBreak: ->
     breakList = []
     currentTop = null
-    for child in @refs.wrapStyleArea.children
+    for child in @refs.sandbox.children
       if currentTop != child.offsetTop
         breakList.push +(child.getAttribute 'data-index') if currentTop?
         currentTop = child.offsetTop
     breakList
 
   getFirstCharacterWidth: ->
-    @refs.wrapStyleArea.firstChild?.offsetWidth
+    @refs.sandbox.firstChild?.offsetWidth
 
   render: ->
     React.DOM.div
+      ref: 'sandbox'
       className: 'wrap-style-sandbox'
-      # lang: @props.lang
-      style: @props.style
-      React.DOM.div
-        ref: 'wrapStyleArea'
-        className: 'wrap-style-area'
-        style:
-          width: "#{@state.defaultCharWidth * @state.column}px"
-        UnicodeSpliter.mapChar @state.text, ({index, value}) ->
-          React.DOM.span key: index, 'data-index': index, value
-        , @props.strict, @state.column // 2
+      style:
+        width: "#{@state.defaultCharWidth * @state.column}px"
+      UnicodeSpliter.mapChar @state.text, ({index, value}) ->
+        React.DOM.span key: index, 'data-index': index, value
+      , @props.strict, @state.column // 2
