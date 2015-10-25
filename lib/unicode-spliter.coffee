@@ -16,8 +16,8 @@ class UnicoderSpliter
     list.push index: pre, value: text.substring(pre)
     return list
 
-  @splitChar = (text) ->
-    return (index: i, value: text[i] for i in [0...text.length])
+  @splitChar = (text, strict = false, skip = 0) ->
+    return @mapChar text, ((obj) -> obj), strict, skip
 
   @mapChar = (text, callback, strict = false, skip = 0) ->
     if strict

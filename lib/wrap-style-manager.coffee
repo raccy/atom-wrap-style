@@ -6,6 +6,8 @@ WrapStyleSandbox = require './wrap-style-sandbox'
 
 module.exports =
 class WrapStyleManager
+  @defaultFontFamily = "Menlo, Consolas, 'DejaVu Sans Mono', monospace"
+
   constructor: ->
     @originalFindWrapColumn = null
     @sandbox = null
@@ -16,9 +18,22 @@ class WrapStyleManager
     @element.classList.add 'wrap-style'
     @element.style.position = 'absolute'
     @element.style.visibility = 'hidden'
-    @element.style.fontFamily = "Menlo, Consolas, 'DejaVu Sans Mono', monospace"
     atom.views.getView atom.workspace
       .appendChild @element
+
+    # Create shadow DOM
+    @shadowRoot = @element.createShadowRoot()
+
+    # Set style
+    @shadowRoot.appendChild document.createElement 'style'
+    @shadowStyle = @shadowRoot.styleSheets[0]
+    @shadowStyle.insertRule '.wrap-style-sandbox {}', 0
+    @shadowStyleRule = @shadowStyle.cssRules[0]
+
+    # Add top element
+    @shadowTop = document.createElement 'div'
+    @shadowTop.classList.add 'wrap-style-top'
+    @shadowRoot.appendChild @shadowTop
 
     # add ovserver
     @subscriptions = new CompositeDisposable
@@ -55,20 +70,20 @@ class WrapStyleManager
     @element.remove()
 
   renderSandbox: ->
+    style = @shadowStyleRule.style
+    style.fontSize = "#{atom.config.get 'editor.fontSize'}px"
+    style.fontFamily = atom.config.get 'editor.fontFamily' || WrapStyleManager.defaultFontFamily
+    style.whiteSpace = atom.config.get 'wrap-style.style.whiteSpace'
+    # style.lineBreak = atom.config.get 'wrap-style.style.lineBreak'
+    style.WebkitLineBreak = atom.config.get 'wrap-style.style.lineBreak'
+    style.wordBreak = atom.config.get 'wrap-style.style.wordBreak'
+    # style.hyphens = atom.config.get 'wrap-style.style.hyphens'
+    # style.WebKitHyphens = atom.config.get 'wrap-style.style.hyphens'
+    style.overflowWrap = atom.config.get 'wrap-style.style.overflowWrap'
+    # @shadowTop.lang = atom.config.get 'wrap-style.lang'
     wrapStyleSandboxElement = React.createElement WrapStyleSandbox,
-      style:
-        fontSize: "#{atom.config.get 'editor.fontSize'}px"
-        fontFamily: atom.config.get 'editor.fontFamily'
-        whiteSpace: atom.config.get 'wrap-style.style.whiteSpace'
-        # lineBreak: atom.config.get 'wrap-style.style.lineBreak'
-        WebkitLineBreak: atom.config.get 'wrap-style.style.lineBreak'
-        wordBreak: atom.config.get 'wrap-style.style.wordBreak'
-        # hyphens: atom.config.get 'wrap-style.style.hyphens'
-        # WebKitHyphens: atom.config.get 'wrap-style.style.hyphens'
-        overflowWrap: atom.config.get 'wrap-style.style.overflowWrap'
-      # lang: atom.config.get 'wrap-style.lang'
       strict: atom.config.get 'wrap-style.strictMode'
-    @sandbox = ReactDom.render wrapStyleSandboxElement, @element
+    @sandbox = ReactDom.render wrapStyleSandboxElement, @shadowTop
     @sandbox.initializeDefaultCharWidth()
 
   # overwrite TokenizedLine#findWrapColumn()
