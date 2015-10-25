@@ -1,4 +1,7 @@
 ## 0.1.3 - Various Update
+* Use Shadow DOM
+
+## 0.1.3 - Various Update
 * Calculate and use defaultCharWidth in Sandbox
 * Performance improved a little
 
