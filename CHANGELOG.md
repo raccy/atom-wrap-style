@@ -1,3 +1,8 @@
+## 0.2.0 - Minor Update
+* Support Atom 0.1.1
+* Add toggle
+* Fix bug: do not set default font-family
+
 ## 0.1.3 - Various Update
 * Use Shadow DOM
 
