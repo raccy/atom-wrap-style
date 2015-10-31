@@ -54,18 +54,16 @@ class WrapStyleManager
       @clearMemory()
 
     @renderSandbox()
-    @overwriteFindWrapColumn()
+
+    @subscriptions.add atom.commands.add 'atom-workspace', 'wrap-style:toggle': => @toggle()
+    @subscriptions.add atom.config.observe 'wrap-style.enabled', (value) => @setFindWrapColumn(value)
+    @setFindWrapColumn atom.config.get 'wrap-style.enabled'
 
   # Tear down any state and detach
   destroy: ->
     @subscriptions?.dispose()
+    @restoreFindWrapColumn()
     @clearMemory()
-
-    # restore TokenizedLine#findWrapColumn()
-    if @originalFindWrapColumn
-      TokenizedLine::.findWrapColumn = @originalFindWrapColumn
-      @originalFindWrapColumn = null
-
     ReactDom.unmountComponentAtNode @element
     @element.remove()
 
@@ -88,16 +86,28 @@ class WrapStyleManager
 
   # overwrite TokenizedLine#findWrapColumn()
   overwriteFindWrapColumn: ->
+    unless @originalFindWrapColumn
+      @originalFindWrapColumn = TokenizedLine::.findWrapColumn
+      _wrapStyleManager = @
+      TokenizedLine::.findWrapColumn = (maxColumn) ->
+        # If all characters are full width, the width is twice the length.
+        return unless (@text.length * 2) > maxColumn
+        return _wrapStyleManager.findWrapColumn(@text, maxColumn)
+      for editor in atom.workspace.getTextEditors()
+        editor.displayBuffer.updateWrappedScreenLines()
+  # restore TokenizedLine#findWrapColumn()
+  restoreFindWrapColumn: ->
     if @originalFindWrapColumn
-      console.warn 'overwrited TokenizedLine#findWrapColumn'
-      return
+      TokenizedLine::.findWrapColumn = @originalFindWrapColumn
+      @originalFindWrapColumn = null
+      for editor in atom.workspace.getTextEditors()
+        editor.displayBuffer.updateWrappedScreenLines()
 
-    @originalFindWrapColumn = TokenizedLine::.findWrapColumn
-    _wrapStyleManager = @
-    TokenizedLine::.findWrapColumn = (maxColumn) ->
-      # If all characters are full width, the width is twice the length.
-      return unless (@text.length * 2) > maxColumn
-      return _wrapStyleManager.findWrapColumn(@text, maxColumn)
+  setFindWrapColumn: (overwrite) ->
+    if overwrite
+      @overwriteFindWrapColumn()
+    else
+      @restoreFindWrapColumn()
 
   clearMemory: ->
     @memoryMap.clear()
@@ -115,3 +125,11 @@ class WrapStyleManager
       pre = i
     @memoryMap.set "#{column}:#{text.substr(pre)}", null
     breakPointList[0]
+
+  toggle: ->
+    if atom.config.get 'wrap-style.enabled'
+      console.log 'Wrap Style disabled'
+      atom.config.set 'wrap-style.enabled', false
+    else
+      console.log 'Wrap Style enabeld'
+      atom.config.set 'wrap-style.enabled', true

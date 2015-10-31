@@ -4,6 +4,9 @@ module.exports = WrapStyle =
   wrapStyleManager: null
 
   config:
+    enabled:
+      type: 'boolean'
+      default: true
     style:
       type: 'object'
       properties:
@@ -41,6 +44,7 @@ module.exports = WrapStyle =
       type: 'boolean'
       default: false
       description: 'Slow, but consider NFD characters and Surrogate pairs.'
+
   activate: (state) ->
     @wrapStyleManager = new WrapStyleManager
 

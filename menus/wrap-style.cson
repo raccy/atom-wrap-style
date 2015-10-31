@@ -1,0 +1,21 @@
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Toggle Wrap Style'
+      'command': 'wrap-style:toggle'
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Wrap Style'
+      'submenu': [
+        {
+          'label': 'Toggle Wrap Style'
+          'command': 'wrap-style:toggle'
+        }
+      ]
+    ]
+  }
+]
