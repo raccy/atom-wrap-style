@@ -70,7 +70,10 @@ class WrapStyleManager
   renderSandbox: ->
     style = @shadowStyleRule.style
     style.fontSize = "#{atom.config.get 'editor.fontSize'}px"
-    style.fontFamily = atom.config.get 'editor.fontFamily' || WrapStyleManager.defaultFontFamily
+    fontFamily = atom.config.get 'editor.fontFamily'
+    if fontFamily.length == 0
+      fontFamily = WrapStyleManager.defaultFontFamily
+    style.fontFamily = fontFamily
     style.whiteSpace = atom.config.get 'wrap-style.style.whiteSpace'
     # style.lineBreak = atom.config.get 'wrap-style.style.lineBreak'
     style.WebkitLineBreak = atom.config.get 'wrap-style.style.lineBreak'
