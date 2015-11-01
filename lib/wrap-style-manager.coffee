@@ -86,6 +86,7 @@ class WrapStyleManager
       strict: atom.config.get 'wrap-style.strictMode'
     @sandbox = ReactDom.render wrapStyleSandboxElement, @shadowTop
     @sandbox.initializeDefaultCharWidth()
+    @updateTextEditors()
 
   # overwrite TokenizedLine#findWrapColumn()
   overwriteFindWrapColumn: ->
@@ -96,15 +97,14 @@ class WrapStyleManager
         # If all characters are full width, the width is twice the length.
         return unless (@text.length * 2) > maxColumn
         return _wrapStyleManager.findWrapColumn(@text, maxColumn)
-      for editor in atom.workspace.getTextEditors()
-        editor.displayBuffer.updateWrappedScreenLines()
+      @updateTextEditors()
+
   # restore TokenizedLine#findWrapColumn()
   restoreFindWrapColumn: ->
     if @originalFindWrapColumn
       TokenizedLine::.findWrapColumn = @originalFindWrapColumn
       @originalFindWrapColumn = null
-      for editor in atom.workspace.getTextEditors()
-        editor.displayBuffer.updateWrappedScreenLines()
+      @updateTextEditors()
 
   setFindWrapColumn: (overwrite) ->
     if overwrite
@@ -136,3 +136,7 @@ class WrapStyleManager
     else
       console.log 'Wrap Style enabeld'
       atom.config.set 'wrap-style.enabled', true
+
+  updateTextEditors: ->
+    for editor in atom.workspace.getTextEditors()
+      editor.displayBuffer.updateWrappedScreenLines()
