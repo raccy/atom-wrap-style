@@ -1,5 +1,5 @@
 {CompositeDisposable} = require 'atom'
-TokenizedLine = require 'src/tokenized-line'
+TokenizedLine = require atom.packages.resourcePathWithTrailingSlash + 'src/tokenized-line'
 React = require 'react'
 ReactDom = require 'react-dom'
 WrapStyleSandbox = require './wrap-style-sandbox'
