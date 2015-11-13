@@ -2,6 +2,7 @@
 * Compatible with Atom 1.2.0
     * Fix bug: #1 failed require
     * Fix bug: incorrect column with CJK
+* Update React 0.14.2
 
 ## 0.2.0 - Minor Update
 * Support Atom 1.1.0
