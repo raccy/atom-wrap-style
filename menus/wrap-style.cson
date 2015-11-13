@@ -7,15 +7,12 @@
   ]
 'menu': [
   {
-    'label': 'Packages'
+    'label': 'View'
     'submenu': [
-      'label': 'Wrap Style'
-      'submenu': [
-        {
-          'label': 'Toggle Wrap Style'
-          'command': 'wrap-style:toggle'
-        }
-      ]
+      {
+        'label': 'Toggle Wrap Style'
+        'command': 'wrap-style:toggle'
+      }
     ]
   }
 ]
