@@ -1,5 +1,10 @@
+## 0.3.0 - Bug Fixes
+* Compatible with Atom 1.2.0
+    * Fix bug: #1 failed require
+    * Fix bug: incorrect column with CJK
+
 ## 0.2.0 - Minor Update
-* Support Atom 0.1.1
+* Support Atom 1.1.0
 * Add toggle
 * Update text editors when settings changed
 * Fix bug: do not set default font-family
