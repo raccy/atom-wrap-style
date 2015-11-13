@@ -11,11 +11,11 @@
   "repository": "https://github.com/raccy/atom-wrap-style",
   "license": "MIT",
   "engines": {
-    "atom": ">=1.1.0 <2.0.0"
+    "atom": ">=1.2.0 <2.0.0"
   },
   "dependencies": {
-    "react": "^0.14.0",
-    "react-dom": "^0.14.0",
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2",
     "unicode-8.0.0": "^0.1.5"
   }
 }

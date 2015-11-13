@@ -1,5 +1,6 @@
 {CompositeDisposable} = require 'atom'
-TokenizedLine = require 'src/tokenized-line'
+DisplayBuffer = require atom.packages.resourcePathWithTrailingSlash + 'src/display-buffer'
+TokenizedLine = require atom.packages.resourcePathWithTrailingSlash + 'src/tokenized-line'
 React = require 'react'
 ReactDom = require 'react-dom'
 WrapStyleSandbox = require './wrap-style-sandbox'
@@ -91,9 +92,11 @@ class WrapStyleManager
   # overwrite TokenizedLine#findWrapColumn()
   overwriteFindWrapColumn: ->
     unless @originalFindWrapColumn
-      @originalFindWrapColumn = TokenizedLine::.findWrapColumn
+      @originalGetSoftWrapColumnForTokenizedLine = DisplayBuffer::getSoftWrapColumnForTokenizedLine
+      @originalFindWrapColumn = TokenizedLine::findWrapColumn
       _wrapStyleManager = @
-      TokenizedLine::.findWrapColumn = (maxColumn) ->
+      DisplayBuffer::getSoftWrapColumnForTokenizedLine = DisplayBuffer::getSoftWrapColumn
+      TokenizedLine::findWrapColumn = (maxColumn) ->
         # If all characters are full width, the width is twice the length.
         return unless (@text.length * 2) > maxColumn
         return _wrapStyleManager.findWrapColumn(@text, maxColumn)
@@ -102,8 +105,10 @@ class WrapStyleManager
   # restore TokenizedLine#findWrapColumn()
   restoreFindWrapColumn: ->
     if @originalFindWrapColumn
-      TokenizedLine::.findWrapColumn = @originalFindWrapColumn
+      TokenizedLine::findWrapColumn = @originalFindWrapColumn
+      DisplayBuffer::getSoftWrapColumnForTokenizedLine = @originalGetSoftWrapColumnForTokenizedLine
       @originalFindWrapColumn = null
+      @originalGetSoftWrapColumnForTokenizedLine = null
       @updateTextEditors()
 
   setFindWrapColumn: (overwrite) ->
@@ -127,6 +132,7 @@ class WrapStyleManager
       @memoryMap.set "#{column}:#{text.substr(pre)}", i - pre
       pre = i
     @memoryMap.set "#{column}:#{text.substr(pre)}", null
+    # console.log @memoryMap
     breakPointList[0]
 
   toggle: ->
