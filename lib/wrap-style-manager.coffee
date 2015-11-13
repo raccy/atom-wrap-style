@@ -132,7 +132,7 @@ class WrapStyleManager
       @memoryMap.set "#{column}:#{text.substr(pre)}", i - pre
       pre = i
     @memoryMap.set "#{column}:#{text.substr(pre)}", null
-    console.log @memoryMap
+    # console.log @memoryMap
     breakPointList[0]
 
   toggle: ->
