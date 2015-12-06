@@ -1,8 +1,11 @@
+regenerate = require 'regenerate'
+
 module.exports =
 class UnicoderSpliter
-  @unbreakableRegex = new RegExp(require('unicode-8.0.0/blocks/Low Surrogates/regex').toString().slice(1, -1) +
-    '|' +
-    require('unicode-8.0.0/bidi/NSM/regex').toString().slice(1, -1))
+  @unbreakableRegex = regenerate()
+    .add(require('unicode-8.0.0/blocks/Low Surrogates/code-points'))
+    .add(require('unicode-8.0.0/bidi/NSM/code-points'))
+    .toRegExp()
 
   @splitCharStrict = (text, skip = 0) ->
     return [] unless text
