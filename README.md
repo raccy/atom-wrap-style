@@ -1,4 +1,5 @@
 # Atom Wrap Style
+[![Build Status](https://travis-ci.org/raccy/atom-wrap-style.svg?branch=master)](https://travis-ci.org/raccy/atom-wrap-style)
 
 Select word warp style in Atom.
 
