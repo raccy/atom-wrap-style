@@ -1,3 +1,7 @@
+## 0.3.1 - Various Update
+* Make Unicode Regex with regenerate
+* Add Travis CI
+
 ## 0.3.0 - Bug Fixes
 * Compatible with Atom 1.2.0
     * Fix bug: #1 failed require
