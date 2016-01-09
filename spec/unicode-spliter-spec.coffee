@@ -14,6 +14,12 @@ describe 'UnicodeSpliter', ->
         {index: 0, value: 'あ'},
         {index: 1, value: 'い'},
       ]
+    it 'abc skip 2', ->
+      text = 'abc'
+      expect(UnicodeSpliter.splitChar(text, false, 2)).toEqual [
+        {index: 0, value: 'ab'},
+        {index: 2, value: 'c'},
+      ]
   describe 'UnicodeSpliter.splitChar with Strict', ->
     it 'ab', ->
       text = 'ab'
@@ -47,4 +53,10 @@ describe 'UnicodeSpliter', ->
         {index: 0, value: 'a'},
         {index: 1, value: 'か\u3099'},
         {index: 3, value: 'b'},
+      ]
+    it 'abc skip 2', ->
+      text = 'abc'
+      expect(UnicodeSpliter.splitChar(text, true, 2)).toEqual [
+        {index: 0, value: 'ab'},
+        {index: 2, value: 'c'},
       ]
