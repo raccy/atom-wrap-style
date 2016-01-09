@@ -7,26 +7,21 @@ class UnicoderSpliter
     .add(require('unicode-8.0.0/bidi/NSM/code-points'))
     .toRegExp()
 
-  @splitCharStrict = (text, skip = 0) ->
-    return [] unless text
-    skip ||= 1
-    list = []
-    pre = 0
-    for i in [skip...text.length]
-      unless @unbreakableRegex.test(text[i])
-        list.push index: pre, value: text.substring(pre, i)
-        pre = i
-    list.push index: pre, value: text.substring(pre)
-    return list
-
   @splitChar = (text, strict = false, skip = 0) ->
-    return @mapChar text, ((obj) -> obj), strict, skip
+    return @mapChar text, ((index, value) -> {index: index, value: value}), strict, skip
 
   @mapChar = (text, callback, strict = false, skip = 0) ->
+    return [] unless text
+    skip ||= 1
     if strict
-      return (callback obj for obj in @splitCharStrict text, skip)
-    else if skip
-      return [callback index: 0, value: text[0...skip]]
-        .concat(callback index: i, value: text[i] for i in [skip...text.length])
+      list = []
+      pre = 0
+      for i in [skip...text.length]
+        unless @unbreakableRegex.test(text[i])
+          list.push(callback pre, text.substring(pre, i))
+          pre = i
+      list.push(callback pre, text.substring(pre))
+      return list
     else
-      return (callback index: i, value: text[i] for i in [0...text.length])
+      return [callback 0, text[0...skip]]
+        .concat(callback i, text[i] for i in [skip...text.length])
