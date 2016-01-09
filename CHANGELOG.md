@@ -1,6 +1,7 @@
 ## 0.3.1 - Various Update
 * Make Unicode Regex with regenerate
 * Add Travis CI
+* Update React 0.14.6
 
 ## 0.3.0 - Bug Fixes
 * Compatible with Atom 1.2.0
