@@ -2,6 +2,7 @@
 * Make Unicode Regex with regenerate
 * Add Travis CI
 * Update React 0.14.6
+* Performance improved a little, maybe
 
 ## 0.3.0 - Bug Fixes
 * Compatible with Atom 1.2.0

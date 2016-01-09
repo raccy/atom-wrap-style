@@ -37,7 +37,7 @@ class WrapStyleSandbox extends React.Component
     return null unless areaElement.children.length
 
     firstTop = areaElement.children[0].offsetTop
-    breakPoint = null
+    # breakPoint = null
 
     top = 0
     bottom = areaElement.children.length - 1
@@ -63,12 +63,30 @@ class WrapStyleSandbox extends React.Component
   # OPTIMIZE: More fast!
   findAllBreak: ->
     breakList = []
-    currentTop = null
-    for child in @refs.sandbox.children
-      if currentTop != child.offsetTop
-        breakList.push +(child.getAttribute 'data-index') if currentTop?
-        currentTop = child.offsetTop
+    areaElement = @refs.sandbox
+    top = 0
+    while top < areaElement.children.length
+      bottom = areaElement.children.length - 1
+      firstTop = areaElement.children[top].offsetTop
+      if areaElement.children[bottom].offsetTop == firstTop
+        break
+      while bottom - top > 1
+        check = (bottom + top) // 2
+        if areaElement.children[check].offsetTop == firstTop
+          top = check
+        else
+          bottom = check
+      breakList.push +(areaElement.children[bottom].getAttribute 'data-index')
+      top = bottom + 1
     breakList
+
+    # OPTIMIZE: another
+    # currentTop = null
+    # for child in @refs.sandbox.children
+    #   if currentTop != child.offsetTop
+    #     breakList.push +(child.getAttribute 'data-index') if currentTop?
+    #     currentTop = child.offsetTop
+    # breakList
 
   getFirstCharacterWidth: ->
     @refs.sandbox.firstChild?.offsetWidth
