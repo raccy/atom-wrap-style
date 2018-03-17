@@ -1,3 +1,7 @@
+** This package is broken, and I don't plan to fix it. **
+
+Someday, I'll try to fix it, maybe...
+
 # Atom Wrap Style
 [![Build Status](https://travis-ci.org/raccy/atom-wrap-style.svg?branch=master)](https://travis-ci.org/raccy/atom-wrap-style)
 
