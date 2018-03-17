@@ -1,4 +1,4 @@
-**This package is broken, and I don't plan to fix it.**
+__This package is broken, and I don't plan to fix it__
 
 Someday, I'll try to fix it, maybe...
 
